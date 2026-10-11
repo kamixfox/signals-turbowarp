@@ -1,4 +1,4 @@
-import { state, getActiveHandlerCount, raiseErrorInternal } from "./shared.js";
+import { state, getActiveHandlerCount, raiseErrorInternal, runtime } from "./shared.js";
 
 export function fireAction(args) {
   const name = args.NAME;
@@ -17,6 +17,13 @@ export function fireAction(args) {
     state.actionQueues.set(name, []);
   }
   state.actionQueues.get(name).push(args.DATA);
+  try {
+    if (runtime) {
+      runtime.startHats("signalsextension_whenActionReceived");
+    }
+  } catch (e) {
+    // ignore
+  }
 }
 
 export function querySignal(args) {
@@ -38,6 +45,14 @@ export function querySignal(args) {
   }
   state.queryQueues.get(name).push({ id: queryId, data: args.DATA });
 
+  try {
+    if (runtime) {
+      runtime.startHats("signalsextension_whenQueryRequested");
+    }
+  } catch (e) {
+    // ignore
+  }
+
   return new Promise((resolve) => {
     state.queryResolvers.set(queryId, resolve);
 
@@ -57,6 +72,13 @@ export function emitEvent(args) {
     state.eventQueues.set(name, []);
   }
   state.eventQueues.get(name).push(args.DATA);
+  try {
+    if (runtime) {
+      runtime.startHats("signalsextension_whenEventEmitted");
+    }
+  } catch (e) {
+    // ignore
+  }
 }
 
 export function getSignalData(args, util) {
