@@ -1,3 +1,5 @@
+import { state, registerHandler } from "./shared.js";
+
 export function whenActionReceived(args, util) {
   registerHandler(state.actionHandlers, args.NAME, util);
   const queue = state.actionQueues.get(args.NAME);

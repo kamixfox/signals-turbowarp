@@ -1,3 +1,5 @@
+import { state, getActiveHandlerCount, raiseErrorInternal } from "./shared.js";
+
 export function fireAction(args) {
   const name = args.NAME;
   const count = getActiveHandlerCount(state.actionHandlers, name);
@@ -23,11 +25,11 @@ export function querySignal(args) {
 
   if (count === 0) {
     raiseErrorInternal("SignalsError", "This action/query has no handler.");
-    return "";
+    return Promise.resolve("");
   }
   if (count >= 2) {
     raiseErrorInternal("SignalsError", "Query has multiple handlers.");
-    return "";
+    return Promise.resolve("");
   }
 
   const queryId = ++state.queryCounter;

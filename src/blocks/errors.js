@@ -1,3 +1,5 @@
+import { state, raiseErrorInternal } from "./shared.js";
+
 export function raiseError(args, util) {
   const type = args.TYPE || "Error";
   const message = args.MESSAGE || "An error occurred.";

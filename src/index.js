@@ -46,12 +46,14 @@ export function setup() {
   };
 
   // Poll explicitly so consecutive queued signals do not need a false edge.
-  const runtime = Scratch.vm.runtime;
-  runtime.on("BEFORE_EXECUTE", () => {
-    runtime.startHats("signalsextension_whenActionReceived");
-    runtime.startHats("signalsextension_whenQueryRequested");
-    runtime.startHats("signalsextension_whenEventEmitted");
-  });
+  if (Scratch.vm && Scratch.vm.runtime) {
+    const runtime = Scratch.vm.runtime;
+    runtime.on("BEFORE_EXECUTE", () => {
+      runtime.startHats("signalsextension_whenActionReceived");
+      runtime.startHats("signalsextension_whenQueryRequested");
+      runtime.startHats("signalsextension_whenEventEmitted");
+    });
+  }
 
   function registerHandler(handlersMap, name, util) {
     if (!handlersMap.has(name)) {
@@ -88,4 +90,24 @@ export function setup() {
       message: validMessage,
     };
   }
+
+  const shared = {
+    state,
+    registerHandler,
+    getActiveHandlerCount,
+    raiseErrorInternal,
+  };
+  import("./blocks/shared.js").then((mod) => {
+    mod.init(shared);
+  });
+}
+
+async function initShared(state, registerHandler, getActiveHandlerCount, raiseErrorInternal) {
+  const mod = await import("./blocks/shared.js");
+  mod.init({
+    state,
+    registerHandler,
+    getActiveHandlerCount,
+    raiseErrorInternal,
+  });
 }
