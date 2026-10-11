@@ -19,7 +19,7 @@ blocks:
   - opcode: whenActionReceived
     blockType: hat
     text: "when action [NAME] received"
-    isEdgeActivated: true
+    isEdgeActivated: false
     arguments:
       NAME:
         type: string
@@ -28,7 +28,7 @@ blocks:
   - opcode: whenQueryRequested
     blockType: hat
     text: "when query [NAME] requested"
-    isEdgeActivated: true
+    isEdgeActivated: false
     arguments:
       NAME:
         type: string
@@ -37,7 +37,7 @@ blocks:
   - opcode: whenEventEmitted
     blockType: hat
     text: "when event [NAME] emitted"
-    isEdgeActivated: true
+    isEdgeActivated: false
     arguments:
       NAME:
         type: string

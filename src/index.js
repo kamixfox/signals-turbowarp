@@ -45,6 +45,14 @@ export function setup() {
     threadData: new Map(),
   };
 
+  // Poll explicitly so consecutive queued signals do not need a false edge.
+  const runtime = Scratch.vm.runtime;
+  runtime.on("BEFORE_EXECUTE", () => {
+    runtime.startHats("signalsextension_whenActionReceived");
+    runtime.startHats("signalsextension_whenQueryRequested");
+    runtime.startHats("signalsextension_whenEventEmitted");
+  });
+
   function registerHandler(handlersMap, name, util) {
     if (!handlersMap.has(name)) {
       handlersMap.set(name, new Map());
