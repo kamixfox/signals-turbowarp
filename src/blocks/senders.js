@@ -22,7 +22,7 @@ export function fireAction(args) {
       runtime.startHats("signalsextension_whenActionReceived");
     }
   } catch (e) {
-    // ignore
+    raiseErrorInternal("SignalsError", e && e.message ? e.message : String(e));
   }
 }
 
@@ -50,7 +50,7 @@ export function querySignal(args) {
       runtime.startHats("signalsextension_whenQueryRequested");
     }
   } catch (e) {
-    // ignore
+    raiseErrorInternal("SignalsError", e && e.message ? e.message : String(e));
   }
 
   return new Promise((resolve) => {
@@ -77,7 +77,7 @@ export function emitEvent(args) {
       runtime.startHats("signalsextension_whenEventEmitted");
     }
   } catch (e) {
-    // ignore
+    raiseErrorInternal("SignalsError", e && e.message ? e.message : String(e));
   }
 }
 

@@ -103,13 +103,3 @@ export function setup() {
     mod.init(shared);
   }).catch(() => {});
 }
-
-async function initShared(state, registerHandler, getActiveHandlerCount, raiseErrorInternal) {
-  const mod = await import("./blocks/shared.js");
-  mod.init({
-    state,
-    registerHandler,
-    getActiveHandlerCount,
-    raiseErrorInternal,
-  });
-}

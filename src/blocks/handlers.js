@@ -14,10 +14,14 @@ export function whenQueryRequested(args, util) {
   registerHandler(state.queryHandlers, args.NAME, util);
   const queue = state.queryQueues.get(args.NAME);
   if (queue && queue.length > 0) {
-    const request = queue.shift();
-    state.threadQueryId.set(util.thread, request.id);
-    state.threadData.set(util.thread, request.data);
-    return true;
+    while (queue.length > 0) {
+      const request = queue.shift();
+      if (request && request.id !== undefined && state.queryResolvers.has(request.id)) {
+        state.threadQueryId.set(util.thread, request.id);
+        state.threadData.set(util.thread, request.data);
+        return true;
+      }
+    }
   }
   return false;
 }
