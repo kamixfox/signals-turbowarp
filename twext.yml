@@ -1,0 +1,139 @@
+name: "Signals"
+version: "0.1.0"
+description: "Use inter-process communication in your TurboWarp projects."
+author: "Kamix Fox"
+license: "Apache-2.0"
+
+entryPoint: "src/index.js"
+outputPath: "dist/extension.js"
+
+extension:
+  id: "signalsextension"
+  name: "Signals"
+  className: "SignalsExtension"
+  color1: "#5974bf"
+  menus:
+    errorTypeMenu: _getErrorTypes
+
+blocks:
+  - opcode: whenActionReceived
+    blockType: hat
+    text: "when action [NAME] received"
+    isEdgeActivated: false
+    arguments:
+      NAME:
+        type: string
+        defaultValue: "RegistryAPI.write"
+
+  - opcode: whenQueryRequested
+    blockType: hat
+    text: "when query [NAME] requested"
+    isEdgeActivated: false
+    arguments:
+      NAME:
+        type: string
+        defaultValue: "RegistryAPI.read"
+
+  - opcode: whenEventEmitted
+    blockType: hat
+    text: "when event [NAME] emitted"
+    isEdgeActivated: false
+    arguments:
+      NAME:
+        type: string
+        defaultValue: "WindowManager.onResize"
+
+  - opcode: returnValue
+    blockType: command
+    text: "return value [VALUE]"
+    isTerminal: true
+    arguments:
+      VALUE:
+        type: string
+        defaultValue: "0"
+
+  - "---"
+
+  - opcode: fireAction
+    blockType: command
+    text: "fire action [NAME] with data [DATA]"
+    arguments:
+      NAME:
+        type: string
+        defaultValue: "RegistryAPI.write"
+      DATA:
+        type: string
+        defaultValue: '{"key": "value"}'
+
+  - opcode: querySignal
+    blockType: reporter
+    text: "query [NAME] with data [DATA]"
+    arguments:
+      NAME:
+        type: string
+        defaultValue: "RegistryAPI.read"
+      DATA:
+        type: string
+        defaultValue: '{"key": "value"}'
+
+  - opcode: emitEvent
+    blockType: command
+    text: "emit event [NAME] with data [DATA]"
+    arguments:
+      NAME:
+        type: string
+        defaultValue: "WindowManager.onResize"
+      DATA:
+        type: string
+        defaultValue: '{"width": 800}'
+
+  - opcode: getSignalData
+    blockType: reporter
+    text: "signal data"
+
+  - "---"
+
+  - opcode: raiseError
+    blockType: command
+    text: "raise error [TYPE] message [MESSAGE]"
+    isTerminal: true
+    arguments:
+      TYPE:
+        type: string
+        menu: errorTypeMenu
+        defaultValue: "SignalsError"
+      MESSAGE:
+        type: string
+        defaultValue: "Something went wrong."
+
+  - opcode: didErrorOccur
+    blockType: boolean
+    text: "did error occur?"
+
+  - opcode: lastErrorType
+    blockType: reporter
+    text: "last error type"
+
+  - opcode: lastErrorMessage
+    blockType: reporter
+    text: "last error message"
+
+  - opcode: clearErrorState
+    blockType: command
+    text: "clear error state"
+
+  - opcode: registerErrorType
+    blockType: command
+    text: "register error type [TYPE]"
+    arguments:
+      TYPE:
+        type: string
+        defaultValue: "CustomError"
+
+  - opcode: unregisterErrorType
+    blockType: command
+    text: "unregister error type [TYPE]"
+    arguments:
+      TYPE:
+        type: string
+        defaultValue: "CustomError"
