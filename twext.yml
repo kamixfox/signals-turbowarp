@@ -1,17 +1,18 @@
 name: "Signals"
-version: "0.1.0"
+version: "2.0.0"
 description: "Use inter-process communication in your TurboWarp projects."
-author: "Kamix Fox"
+author: "Kamix"
 license: "Apache-2.0"
 
 entryPoint: "src/index.js"
 outputPath: "dist/extension.js"
 
 extension:
-  id: "signalsextension"
+  id: "signals"
   name: "Signals"
   className: "SignalsExtension"
   color1: "#5974bf"
+  isUnsandboxed: true
   menus:
     errorTypeMenu: _getErrorTypes
 
