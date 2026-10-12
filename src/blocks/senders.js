@@ -45,16 +45,16 @@ export function querySignal(args) {
   }
   state.queryQueues.get(name).push({ id: queryId, data: args.DATA });
 
-  try {
-    if (runtime) {
-      runtime.startHats("signalsextension_whenQueryRequested");
-    }
-  } catch (e) {
-    raiseErrorInternal("SignalsError", e && e.message ? e.message : String(e));
-  }
-
   return new Promise((resolve) => {
     state.queryResolvers.set(queryId, resolve);
+
+    try {
+      if (runtime) {
+        runtime.startHats("signalsextension_whenQueryRequested");
+      }
+    } catch (e) {
+      raiseErrorInternal("SignalsError", e && e.message ? e.message : String(e));
+    }
 
     setTimeout(() => {
       if (state.queryResolvers.has(queryId)) {
