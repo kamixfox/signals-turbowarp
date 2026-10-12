@@ -54,6 +54,18 @@ export function querySignal(args) {
       }
     } catch (e) {
       raiseErrorInternal("SignalsError", e && e.message ? e.message : String(e));
+      if (state.queryResolvers.has(queryId)) {
+        state.queryResolvers.delete(queryId);
+        const queue = state.queryQueues.get(name);
+        if (queue) {
+          const index = queue.findIndex((request) => request.id === queryId);
+          if (index !== -1) {
+            queue.splice(index, 1);
+          }
+        }
+        resolve("");
+      }
+      return;
     }
 
     setTimeout(() => {
